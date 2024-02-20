@@ -22,7 +22,7 @@ class _EditScreenState extends EditImageVM {
         controller: screenshotController,
         child: SafeArea(
           child: SizedBox(
-            height: MediaQuery.of(context).size.height * 0.3,
+            height: MediaQuery.of(context).size.height,
             child: Stack(
               children: [
                 _img,
