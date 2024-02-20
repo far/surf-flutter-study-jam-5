@@ -8,7 +8,7 @@ class MenuScreen extends StatelessWidget {
   final txtController = TextEditingController();
   late XFile img;
 
-  showLinkDialog(context) {
+  void showLinkDialog(context) {
     showDialog(
       context: context,
       builder: (BuildContext context) => AlertDialog(
@@ -28,11 +28,37 @@ class MenuScreen extends StatelessWidget {
             child: const Text('Cancel'),
           ),
           ElevatedButton(
-            onPressed: () async {
+            onPressed: () {
               var link = txtController.text;
-
-              //final resp = await http.get(Uri.());
-              //resp.bodyBytes;
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => EditScreen(
+                    isWeb: kIsWeb,
+                    img: Image.network(
+                      link,
+                      frameBuilder: (BuildContext context, Widget child,
+                          int? frame, bool wasSynchronouslyLoaded) {
+                        if (wasSynchronouslyLoaded) {
+                          return child;
+                        }
+                        return AnimatedOpacity(
+                          opacity: frame == null ? 0 : 1,
+                          duration: const Duration(seconds: 1),
+                          curve: Curves.easeOut,
+                          child: child,
+                        );
+                      },
+                      fit: BoxFit.cover,
+                      errorBuilder: (BuildContext context, Object exception,
+                          StackTrace? stackTrace) {
+                        return Text(
+                          "Upload Error",
+                        );
+                      },
+                    ),
+                  ),
+                ),
+              );
             },
             child: const Text('Upload'),
           ),
@@ -71,31 +97,32 @@ class MenuScreen extends StatelessWidget {
               if (file != null) {
                 var size = await file.length();
                 var image_content = await file.readAsBytes();
-
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    backgroundColor: Theme.of(context).primaryColor,
-                    duration: Duration(seconds: 1),
-                    content: Text(
-                      "Uploading file \n" +
-                          file.name.toString() +
-                          " [size: ${size}]...",
-                    ),
-                  ),
-                );
-
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => EditScreen(
-                      isWeb: kIsWeb,
-                      img: Image.memory(
-                        image_content,
-                        fit: BoxFit.fill,
-                        width: MediaQuery.of(context).size.width,
+                Future.delayed(Duration.zero, () {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      backgroundColor: Theme.of(context).primaryColor,
+                      duration: Duration(seconds: 1),
+                      content: Text(
+                        "Uploading file \n" +
+                            file.name.toString() +
+                            " [size: ${size}]...",
                       ),
                     ),
-                  ),
-                );
+                  );
+
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => EditScreen(
+                        isWeb: kIsWeb,
+                        img: Image.memory(
+                          image_content,
+                          fit: BoxFit.cover,
+                          width: MediaQuery.of(context).size.width,
+                        ),
+                      ),
+                    ),
+                  );
+                });
               }
             },
           )

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:meme_generator/screens/menu.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 
