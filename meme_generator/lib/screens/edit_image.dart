@@ -4,9 +4,7 @@ import 'package:meme_generator/widgets/image_text.dart';
 import 'package:screenshot/screenshot.dart';
 
 class EditScreen extends StatefulWidget {
-  const EditScreen({Key? key, required this.isWeb, required this.img})
-      : super(key: key);
-  final bool isWeb;
+  const EditScreen({Key? key, required this.img}) : super(key: key);
   final Widget img;
 
   @override

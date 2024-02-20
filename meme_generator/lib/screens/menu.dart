@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:meme_generator/screens/edit_image.dart';
@@ -33,7 +32,6 @@ class MenuScreen extends StatelessWidget {
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) => EditScreen(
-                    isWeb: kIsWeb,
                     img: Image.network(
                       link,
                       frameBuilder: (BuildContext context, Widget child,
@@ -113,7 +111,6 @@ class MenuScreen extends StatelessWidget {
                   Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (context) => EditScreen(
-                        isWeb: kIsWeb,
                         img: Image.memory(
                           image_content,
                           fit: BoxFit.cover,
