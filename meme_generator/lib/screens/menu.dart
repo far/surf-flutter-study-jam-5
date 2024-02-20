@@ -1,7 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:meme_generator/screens/edit_image.dart';
 
@@ -33,7 +31,7 @@ class MenuScreen extends StatelessWidget {
             onPressed: () async {
               var link = txtController.text;
 
-              //final resp = await http.get(Uri.link);
+              //final resp = await http.get(Uri.());
               //resp.bodyBytes;
             },
             child: const Text('Upload'),
