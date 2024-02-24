@@ -29,35 +29,51 @@ class MenuScreen extends StatelessWidget {
           ),
           ElevatedButton(
             onPressed: () {
-              var link = txtController.text;
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => EditScreen(
-                    img: Image.network(
-                      link,
-                      frameBuilder: (BuildContext context, Widget child,
-                          int? frame, bool wasSynchronouslyLoaded) {
-                        if (wasSynchronouslyLoaded) {
-                          return child;
-                        }
-                        return AnimatedOpacity(
-                          opacity: frame == null ? 0 : 1,
-                          duration: const Duration(seconds: 1),
-                          curve: Curves.easeOut,
-                          child: child,
-                        );
-                      },
-                      fit: BoxFit.cover,
-                      errorBuilder: (BuildContext context, Object exception,
-                          StackTrace? stackTrace) {
-                        return const Text(
-                          "Upload Error",
-                        );
-                      },
+              // validate URL
+
+              final Uri? link = Uri.tryParse(txtController.text);
+              if (!link!.hasAbsolutePath) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    backgroundColor: Colors.red,
+                    duration: const Duration(seconds: 1),
+                    showCloseIcon: true,
+                    content: const Text('Invalid URL'),
+                  ),
+                );
+              } else {
+                // download image from Internet
+                // push it to EditScreen with Image.network
+
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => EditScreen(
+                      img: Image.network(
+                        link.toString(),
+                        frameBuilder: (BuildContext context, Widget child,
+                            int? frame, bool wasSynchronouslyLoaded) {
+                          if (wasSynchronouslyLoaded) {
+                            return child;
+                          }
+                          return AnimatedOpacity(
+                            opacity: frame == null ? 0 : 1,
+                            duration: const Duration(seconds: 1),
+                            curve: Curves.easeOut,
+                            child: child,
+                          );
+                        },
+                        fit: BoxFit.cover,
+                        errorBuilder: (BuildContext context, Object exception,
+                            StackTrace? stackTrace) {
+                          return const Text(
+                            "Upload Error",
+                          );
+                        },
+                      ),
                     ),
                   ),
-                ),
-              );
+                );
+              }
             },
             child: const Text('Upload'),
           ),
@@ -89,10 +105,11 @@ class MenuScreen extends StatelessWidget {
             tooltip: "Upload from gallery",
             icon: const Icon(Icons.computer, size: 50, color: Colors.green),
             onPressed: () async {
+              // pick the image
               XFile? file = await ImagePicker().pickImage(
                 source: ImageSource.gallery,
               );
-
+              // read image content (bytes)
               if (file != null) {
                 var size = await file.length();
                 var imageBytes = await file.readAsBytes();
@@ -105,7 +122,7 @@ class MenuScreen extends StatelessWidget {
                           "Uploading file \n${file.name.toString()} [size: $size]..."),
                     ),
                   );
-
+                  // push it to EditScreen with Image.memory
                   Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (context) => EditScreen(
