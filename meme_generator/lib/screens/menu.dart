@@ -42,8 +42,8 @@ class MenuScreen extends StatelessWidget {
               }
               // download image from Internet
               // push it to EditScreen with Image.network
-              showSnack(context, 'Downloading image from ${txtController.text}',
-                  bgColor: Colors.red);
+              showSnack(
+                  context, 'Downloading image from ${txtController.text}');
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) => EditScreen(
