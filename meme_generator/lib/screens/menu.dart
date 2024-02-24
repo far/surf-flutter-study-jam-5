@@ -95,14 +95,14 @@ class MenuScreen extends StatelessWidget {
 
               if (file != null) {
                 var size = await file.length();
-                var image_content = await file.readAsBytes();
+                var imageBytes = await file.readAsBytes();
                 Future.delayed(Duration.zero, () {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       backgroundColor: Theme.of(context).primaryColor,
                       duration: const Duration(seconds: 1),
                       content: Text(
-                          "Uploading file \n${file.name.toString()} [size: ${size}]..."),
+                          "Uploading file \n${file.name.toString()} [size: $size]..."),
                     ),
                   );
 
@@ -110,7 +110,7 @@ class MenuScreen extends StatelessWidget {
                     MaterialPageRoute(
                       builder: (context) => EditScreen(
                         img: Image.memory(
-                          image_content,
+                          imageBytes,
                           fit: BoxFit.cover,
                           width: MediaQuery.of(context).size.width,
                         ),
