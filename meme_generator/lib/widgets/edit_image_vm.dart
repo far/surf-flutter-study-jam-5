@@ -20,35 +20,29 @@ abstract class EditImageVM extends State<EditScreen> {
   List<TextData> txtList = [];
   int idx = 0;
 
-  saveLocally(BuildContext context) {
+  // save image (screenshot)
+  void saveImage(BuildContext context) {
     screenshotController.capture().then((Uint8List? image) async {
       if (image != null) {
         showSnack(context, 'Saving image..');
         if (kIsWeb) {
-          await XFile.fromData(
-            image,
-            mimeType: 'image/jpg',
-          ).saveTo('meme.jpg');
+          await XFile.fromData(image,
+                  mimeType: 'image/jpg',
+                  name: 'MEME_${DateTime.now().millisecondsSinceEpoch}.jpg')
+              .saveTo('.');
         } else {
-          saveImage(image);
+          saveLocally(image);
         }
       }
-    }).catchError((err) {
+    }).catchError((_) {
       showSnack(context, 'Loading image error', bgColor: Colors.red);
     });
   }
 
   // save image locally for not web platforms
-
-  void saveImage(Uint8List bytes) async {
-    final time = DateTime.now()
-        .toIso8601String()
-        .replaceAll('.', '_')
-        .replaceAll(':', '_');
-    final name = "meme_$time";
-
+  void saveLocally(Uint8List bytes) async {
     await requestPermission(Permission.storage);
-    await ImageGallerySaver.saveImage(bytes, name: name);
+    await ImageGallerySaver.saveImage(bytes, name: "meme.jpg");
   }
 
   void removeText(BuildContext context) {

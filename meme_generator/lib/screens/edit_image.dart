@@ -106,7 +106,7 @@ class _EditScreenState extends EditImageVM {
                 Icons.download,
                 color: Colors.black,
               ),
-              onPressed: () => saveLocally(context),
+              onPressed: () => saveImage(context),
               tooltip: 'Save Image',
             ),
             IconButton(
