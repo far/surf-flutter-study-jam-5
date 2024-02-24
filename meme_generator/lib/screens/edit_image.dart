@@ -44,7 +44,7 @@ class _EditScreenState extends EditImageVM {
                               context.findRenderObject() as RenderBox;
                           Offset off = renderBox.globalToLocal(drag.offset);
                           setState(() {
-                            txtList[i].top = off.dy - 96;
+                            txtList[i].top = off.dy - 60;
                             txtList[i].left = off.dx;
                           });
                         },

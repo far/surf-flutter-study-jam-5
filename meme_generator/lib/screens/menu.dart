@@ -71,22 +71,22 @@ class MenuScreen extends StatelessWidget {
       body: Center(
           child: Column(
         children: [
+          SizedBox(
+            height: 50,
+          ),
           IconButton(
             tooltip: "Upload from Internet",
-            icon: const Icon(
-              Icons.upload_file,
-              size: 50,
-            ),
+            icon: const Icon(Icons.upload_file, size: 50, color: Colors.blue),
             onPressed: () async {
               showLinkDialog(context);
             },
           ),
+          SizedBox(
+            height: 50,
+          ),
           IconButton(
             tooltip: "Upload from gallery",
-            icon: const Icon(
-              Icons.computer,
-              size: 50,
-            ),
+            icon: const Icon(Icons.computer, size: 50, color: Colors.green),
             onPressed: () async {
               XFile? file = await ImagePicker().pickImage(
                 source: ImageSource.gallery,
