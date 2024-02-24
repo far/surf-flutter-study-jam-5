@@ -32,7 +32,7 @@ abstract class EditImageVM extends State<EditScreen> {
         );
         if (kIsWeb) {
           await XFile.fromData(
-            image!,
+            image,
             mimeType: 'image/jpg',
           ).saveTo('meme.jpg');
         } else {
