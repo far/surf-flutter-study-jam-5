@@ -23,7 +23,7 @@ abstract class EditImageVM extends State<EditScreen> {
   saveLocally(BuildContext context) {
     screenshotController.capture().then((Uint8List? image) async {
       if (image != null) {
-        showMsg(context, 'Saving image..');
+        showSnack(context, 'Saving image..');
         if (kIsWeb) {
           await XFile.fromData(
             image,
@@ -34,7 +34,7 @@ abstract class EditImageVM extends State<EditScreen> {
         }
       }
     }).catchError((err) {
-      showMsg(context, 'Loading image error', bgColor: Colors.red);
+      showSnack(context, 'Loading image error', bgColor: Colors.red);
     });
   }
 
@@ -55,7 +55,7 @@ abstract class EditImageVM extends State<EditScreen> {
     setState(() {
       txtList.removeAt(idx);
     });
-    showMsg(context, 'Text Deleted');
+    showSnack(context, 'Text Deleted');
   }
 
   void changeTextColor(Color color) {

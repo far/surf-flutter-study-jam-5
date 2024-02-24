@@ -32,17 +32,18 @@ class MenuScreen extends StatelessWidget {
             onPressed: () {
               // validate URL
               if (txtController.text.isEmpty) {
-                showMsg(context, 'Invalid URL', bgColor: Colors.red);
+                showSnack(context, 'Invalid URL', bgColor: Colors.red);
                 return;
               }
               final Uri? link = Uri.tryParse(txtController.text);
               if (!link!.hasAbsolutePath) {
-                showMsg(context, 'Invalid URL', bgColor: Colors.red);
+                showSnack(context, 'Invalid URL', bgColor: Colors.red);
                 return;
               }
               // download image from Internet
               // push it to EditScreen with Image.network
-
+              showSnack(context, 'Downloading image from ${txtController.text}',
+                  bgColor: Colors.red);
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) => EditScreen(
@@ -111,7 +112,7 @@ class MenuScreen extends StatelessWidget {
                 var size = await file.length();
                 var imageBytes = await file.readAsBytes();
                 Future.delayed(Duration.zero, () {
-                  showMsg(context,
+                  showSnack(context,
                       "Uploading file \n${file.name.toString()} [size: $size]...");
                   // push it to EditScreen with Image.memory
                   Navigator.of(context).push(
