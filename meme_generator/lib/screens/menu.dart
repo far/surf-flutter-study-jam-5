@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:meme_generator/screens/edit_image.dart';
 
+//ignore: must_be_immutable
 class MenuScreen extends StatelessWidget {
   MenuScreen({Key? key}) : super(key: key);
   final txtController = TextEditingController();
@@ -49,7 +50,7 @@ class MenuScreen extends StatelessWidget {
                       fit: BoxFit.cover,
                       errorBuilder: (BuildContext context, Object exception,
                           StackTrace? stackTrace) {
-                        return Text(
+                        return const Text(
                           "Upload Error",
                         );
                       },
@@ -71,7 +72,7 @@ class MenuScreen extends StatelessWidget {
       body: Center(
           child: Column(
         children: [
-          SizedBox(
+          const SizedBox(
             height: 50,
           ),
           IconButton(
@@ -81,7 +82,7 @@ class MenuScreen extends StatelessWidget {
               showLinkDialog(context);
             },
           ),
-          SizedBox(
+          const SizedBox(
             height: 50,
           ),
           IconButton(
@@ -99,12 +100,9 @@ class MenuScreen extends StatelessWidget {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       backgroundColor: Theme.of(context).primaryColor,
-                      duration: Duration(seconds: 1),
+                      duration: const Duration(seconds: 1),
                       content: Text(
-                        "Uploading file \n" +
-                            file.name.toString() +
-                            " [size: ${size}]...",
-                      ),
+                          "Uploading file \n${file.name.toString()} [size: ${size}]..."),
                     ),
                   );
 
