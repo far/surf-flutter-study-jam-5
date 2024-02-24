@@ -142,6 +142,7 @@ abstract class EditImageVM extends State<EditScreen> {
   }
 
   void showAddDialog(context) {
+    textInputController.text = '';
     showDialog(
       context: context,
       builder: (BuildContext context) => AlertDialog(
