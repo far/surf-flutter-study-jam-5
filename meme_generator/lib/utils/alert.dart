@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-void showMsg(BuildContext context, String msg,
+void showSnack(BuildContext context, String msg,
     {Color bgColor = Colors.transparent}) {
   if (bgColor == Colors.transparent &&
       Theme.of(context).primaryColor != Colors.transparent) {
