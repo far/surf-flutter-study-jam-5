@@ -29,6 +29,7 @@ class _EditScreenState extends EditImageVM {
                     left: txtList[i].left,
                     top: txtList[i].top,
                     child: GestureDetector(
+                      onTap: () => idx = i,
                       onLongPress: () {
                         setState(() {
                           idx = i;
