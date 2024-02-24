@@ -35,7 +35,6 @@ class _EditScreenState extends EditImageVM {
                           removeText(context);
                         });
                       },
-                      onTap: () => setCurrentIdx(context, i),
                       child: Draggable(
                         feedback: TextImage(textData: txtList[i]),
                         child: TextImage(textData: txtList[i]),
@@ -46,6 +45,7 @@ class _EditScreenState extends EditImageVM {
                           setState(() {
                             txtList[i].top = off.dy - 60;
                             txtList[i].left = off.dx;
+                            idx = i;
                           });
                         },
                       ),

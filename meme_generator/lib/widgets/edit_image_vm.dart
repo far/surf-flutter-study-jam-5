@@ -75,12 +75,6 @@ abstract class EditImageVM extends State<EditScreen> {
     );
   }
 
-  void setCurrentIdx(BuildContext context, index) {
-    setState(() {
-      idx = index;
-    });
-  }
-
   void changeTextColor(Color color) {
     setState(() {
       if (txtList.isEmpty) return;
