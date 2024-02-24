@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <!--
     If you are serving your web app in a path other than the root, change the
@@ -15,7 +16,28 @@
     the `--base-href` argument provided to `flutter build`.
   -->
   <base href="$FLUTTER_BASE_HREF">
+  <style>
+    html,
+    body {
+      height: 100%;
+    }
 
+    .main {
+      height: 100%;
+      width: 100%;
+      display: table;
+    }
+
+    .wrapper {
+      font-family: Menlo;
+      font-size: 33pt;
+      display: table-cell;
+      height: 100%;
+      vertical-align: middle;
+      text-align: center;
+
+    }
+  </style>
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
   <meta name="description" content="A new Flutter project.">
@@ -27,7 +49,7 @@
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
 
   <!-- Favicon -->
-  <link rel="icon" type="image/png" href="favicon.png"/>
+  <link rel="icon" type="image/png" href="favicon.png" />
 
   <title>meme_generator</title>
   <link rel="manifest" href="manifest.json">
@@ -39,21 +61,29 @@
   <!-- This script adds the flutter initialization JS code -->
   <script src="flutter.js" defer></script>
 </head>
+
 <body>
+  <div class="main">
+    <div class="wrapper" id="loading">Loading .</div>
+  </div>
   <script>
-    window.addEventListener('load', function(ev) {
-      // Download main.dart.js
+    window.addEventListener('load', function (ev) {
+      var loading = document.querySelector('#loading');
+      loading.textContent = "Loading ..";
       _flutter.loader.loadEntrypoint({
         serviceWorker: {
           serviceWorkerVersion: serviceWorkerVersion,
         },
-        onEntrypointLoaded: function(engineInitializer) {
-          engineInitializer.initializeEngine().then(function(appRunner) {
-            appRunner.runApp();
-          });
+        onEntrypointLoaded: async function (engineInitializer) {
+          loading.textContent = "Loading ...";
+          let appRunner = await engineInitializer.initializeEngine();
+
+          loading.textContent = "🚀";
+          await appRunner.runApp();
         }
       });
     });
   </script>
 </body>
+
 </html>
