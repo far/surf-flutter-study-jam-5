@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:meme_generator/screens/edit_image.dart';
 import 'package:meme_generator/models/text.dart';
+import 'package:meme_generator/utils/alert.dart';
 import 'package:meme_generator/utils/perm.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -22,14 +23,7 @@ abstract class EditImageVM extends State<EditScreen> {
   saveLocally(BuildContext context) {
     screenshotController.capture().then((Uint8List? image) async {
       if (image != null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            backgroundColor: Theme.of(context).primaryColor,
-            duration: const Duration(seconds: 1),
-            showCloseIcon: true,
-            content: const Text('Saving image..'),
-          ),
-        );
+        showMsg(context, 'Saving image..');
         if (kIsWeb) {
           await XFile.fromData(
             image,
@@ -40,12 +34,7 @@ abstract class EditImageVM extends State<EditScreen> {
         }
       }
     }).catchError((err) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          backgroundColor: Colors.red,
-          content: Text('Loading image error'),
-        ),
-      );
+      showMsg(context, 'Loading image error', bgColor: Colors.red);
     });
   }
 
@@ -66,13 +55,7 @@ abstract class EditImageVM extends State<EditScreen> {
     setState(() {
       txtList.removeAt(idx);
     });
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text(
-          'Text Deleted',
-        ),
-      ),
-    );
+    showMsg(context, 'Text Deleted');
   }
 
   void changeTextColor(Color color) {
