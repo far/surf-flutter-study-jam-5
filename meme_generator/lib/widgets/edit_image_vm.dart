@@ -121,8 +121,8 @@ abstract class EditImageVM extends State<EditScreen> {
       txtList.add(
         TextData(
           text: textInputController.text,
-          left: 0,
-          top: 0,
+          left: MediaQuery.of(context).size.width / 2,
+          top: MediaQuery.of(context).size.height / 2,
           textAlign: TextAlign.left,
           color: Colors.black,
           fontWeight: FontWeight.normal,
