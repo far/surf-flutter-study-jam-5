@@ -42,7 +42,8 @@ abstract class EditImageVM extends State<EditScreen> {
   // save image locally for not web platforms
   void saveLocally(Uint8List bytes) async {
     await requestPermission(Permission.storage);
-    await ImageGallerySaver.saveImage(bytes, name: "meme.jpg");
+    await ImageGallerySaver.saveImage(bytes,
+        name: 'MEME_${DateTime.now().millisecondsSinceEpoch}.jpg');
   }
 
   void removeText(BuildContext context) {
