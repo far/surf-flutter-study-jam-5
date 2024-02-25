@@ -1,7 +1,7 @@
 import 'dart:typed_data';
-
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
+import 'package:meme_generator/utils/gfonts.dart';
 import 'package:meme_generator/screens/edit_image.dart';
 import 'package:meme_generator/models/text.dart';
 import 'package:meme_generator/utils/alert.dart';
@@ -9,7 +9,7 @@ import 'package:meme_generator/utils/perm.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:screenshot/screenshot.dart';
-
+import 'package:flutter_font_picker/flutter_font_picker.dart';
 import 'package:share_plus/share_plus.dart';
 
 abstract class EditImageVM extends State<EditScreen> {
@@ -17,6 +17,8 @@ abstract class EditImageVM extends State<EditScreen> {
   final TextEditingController textInputController = TextEditingController();
   final TextEditingController textCurrent = TextEditingController();
 
+  late String fontFamily;
+  late TextStyle fontStyle;
   List<TextData> txtList = [];
   int idx = 0;
 
@@ -82,6 +84,7 @@ abstract class EditImageVM extends State<EditScreen> {
   }
 
   boldText() {
+    /*
     setState(() {
       if (txtList.isEmpty) return;
       if (txtList[idx].fontWeight == FontWeight.bold) {
@@ -89,10 +92,11 @@ abstract class EditImageVM extends State<EditScreen> {
       } else {
         txtList[idx].fontWeight = FontWeight.bold;
       }
-    });
+    });*/
   }
 
   italicText() {
+    /*
     setState(() {
       if (txtList.isEmpty) return;
       if (txtList[idx].fontStyle == FontStyle.italic) {
@@ -101,6 +105,7 @@ abstract class EditImageVM extends State<EditScreen> {
         txtList[idx].fontStyle = FontStyle.italic;
       }
     });
+    */
   }
 
   alignCenter() {
@@ -121,22 +126,20 @@ abstract class EditImageVM extends State<EditScreen> {
     setState(() {
       txtList.add(
         TextData(
-          text: textInputController.text,
-          left: MediaQuery.of(context).size.width / 2,
-          top: MediaQuery.of(context).size.height / 2,
-          textAlign: TextAlign.left,
-          color: Colors.black,
-          fontWeight: FontWeight.normal,
-          fontStyle: FontStyle.normal,
-          fontSize: 20,
-        ),
+            text: textInputController.text,
+            left: MediaQuery.of(context).size.width / 2,
+            top: MediaQuery.of(context).size.height / 2,
+            textAlign: TextAlign.center,
+            color: Colors.black,
+            fontSize: 50,
+            textStyle: fontStyle),
       );
       idx = txtList.length - 1;
       Navigator.of(context).pop();
     });
   }
 
-  void showAddDialog(context) {
+  void showAddDialog(BuildContext context) {
     textInputController.text = '';
     showDialog(
       context: context,
@@ -144,14 +147,24 @@ abstract class EditImageVM extends State<EditScreen> {
         title: const Text(
           'New Text',
         ),
-        content: TextField(
-          controller: textInputController,
-          maxLines: 10,
-          decoration: const InputDecoration(
-            filled: true,
-            hintText: 'type your text',
-          ),
-        ),
+        content: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              TextField(
+                controller: textInputController,
+                maxLines: 10,
+                decoration: const InputDecoration(
+                  filled: true,
+                  hintText: 'type your text',
+                ),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              ElevatedButton(
+                  onPressed: () => {}, child: const Text('Pick a Font')),
+            ]),
         actions: <Widget>[
           ElevatedButton(
             onPressed: () => Navigator.of(context).pop(),

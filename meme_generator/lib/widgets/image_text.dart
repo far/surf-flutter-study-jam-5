@@ -13,12 +13,7 @@ class TextImage extends StatelessWidget {
     return Text(
       textData.text,
       textAlign: textData.textAlign,
-      style: TextStyle(
-        fontSize: textData.fontSize,
-        fontWeight: textData.fontWeight,
-        fontStyle: textData.fontStyle,
-        color: textData.color,
-      ),
+      style: textData.textStyle,
     );
   }
 }

@@ -7,10 +7,9 @@ class TextData {
   String text;
   double left;
   double top;
-  FontWeight fontWeight;
-  FontStyle fontStyle;
   double fontSize;
   TextAlign textAlign;
+  TextStyle textStyle;
 
   TextData({
     required this.color,
@@ -19,7 +18,6 @@ class TextData {
     required this.left,
     required this.fontSize,
     required this.textAlign,
-    required this.fontWeight,
-    required this.fontStyle,
+    required this.textStyle,
   });
 }
