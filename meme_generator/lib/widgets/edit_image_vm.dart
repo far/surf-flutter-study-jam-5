@@ -128,7 +128,7 @@ abstract class EditImageVM extends State<EditScreen> {
             children: [
               TextField(
                 controller: textInputController,
-                maxLines: 10,
+                maxLines: 5,
                 decoration: const InputDecoration(
                   filled: true,
                   hintText: 'type your text',
@@ -138,7 +138,8 @@ abstract class EditImageVM extends State<EditScreen> {
                 height: 10,
               ),
               ElevatedButton(
-                  onPressed: () => {}, child: const Text('Pick a Font')),
+                  onPressed: () => showFontPicker(context),
+                  child: const Text('Pick a Font')),
             ]),
         actions: <Widget>[
           ElevatedButton(
@@ -151,6 +152,35 @@ abstract class EditImageVM extends State<EditScreen> {
           ),
         ],
       ),
+    );
+  }
+
+  void showFontPicker(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          content: SingleChildScrollView(
+            child: SizedBox(
+              width: double.maxFinite,
+              child: FontPicker(
+                showInDialog: true,
+                initialFontFamily: 'Roboto',
+                onFontChanged: (font) {
+                  setState(() {
+                    fontFamily = font.fontFamily;
+                    fontStyle = font.toTextStyle();
+                  });
+                  debugPrint(
+                    "${font.fontFamily} with font weight ${font.fontWeight} and font style ${font.fontStyle}. FontSpec: ${font.toFontSpec()}",
+                  );
+                },
+                googleFonts: googleFonts,
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }
