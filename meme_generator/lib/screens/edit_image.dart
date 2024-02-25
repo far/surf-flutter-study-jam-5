@@ -127,22 +127,6 @@ class _EditScreenState extends EditImageVM {
             ),
             IconButton(
               icon: const Icon(
-                Icons.format_bold,
-                color: Colors.black,
-              ),
-              onPressed: boldText,
-              tooltip: 'Bold Text',
-            ),
-            IconButton(
-              icon: const Icon(
-                Icons.format_italic,
-                color: Colors.black,
-              ),
-              onPressed: italicText,
-              tooltip: 'Italic Text',
-            ),
-            IconButton(
-              icon: const Icon(
                 Icons.format_align_left,
                 color: Colors.black,
               ),

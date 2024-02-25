@@ -83,31 +83,6 @@ abstract class EditImageVM extends State<EditScreen> {
     });
   }
 
-  boldText() {
-    /*
-    setState(() {
-      if (txtList.isEmpty) return;
-      if (txtList[idx].fontWeight == FontWeight.bold) {
-        txtList[idx].fontWeight = FontWeight.normal;
-      } else {
-        txtList[idx].fontWeight = FontWeight.bold;
-      }
-    });*/
-  }
-
-  italicText() {
-    /*
-    setState(() {
-      if (txtList.isEmpty) return;
-      if (txtList[idx].fontStyle == FontStyle.italic) {
-        txtList[idx].fontStyle = FontStyle.normal;
-      } else {
-        txtList[idx].fontStyle = FontStyle.italic;
-      }
-    });
-    */
-  }
-
   alignCenter() {
     setState(() {
       if (txtList.isEmpty) return;
