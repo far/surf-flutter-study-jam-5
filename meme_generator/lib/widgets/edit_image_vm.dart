@@ -178,9 +178,7 @@ abstract class EditImageVM extends State<EditScreen> {
       if (tutorialShowed) {
         showSnack(context, "New text added");
       } else {
-        showSnack(context,
-            "💡 Use tools at top bar to change selected text parameters\n\nSingle Tap (click) - SELECT text\nDouble Tap (click) - EDIT text\nLong tap (click) - DELETE text",
-            bgColor: Colors.lightBlue, delaySec: 10);
+        showTutorSnack(context);
         tutorialShowed = true;
       }
       Navigator.of(context).pop();

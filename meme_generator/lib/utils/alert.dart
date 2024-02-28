@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+void showTutorSnack(context) => showSnack(context,
+    "💡 Use tools at top bar to change selected text parameters\n\nSingle Tap (click) - SELECT text\nDouble Tap (click) - EDIT text\nLong tap (click) - DELETE text",
+    bgColor: Colors.lightBlue, delaySec: 10);
 void showSnack(BuildContext context, String msg,
     {Color bgColor = Colors.transparent, int delaySec = 1}) {
   if (bgColor == Colors.transparent &&

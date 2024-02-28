@@ -3,6 +3,8 @@ import 'package:meme_generator/widgets/edit_image_vm.dart';
 import 'package:meme_generator/widgets/image_text.dart';
 import 'package:screenshot/screenshot.dart';
 
+import 'package:meme_generator/utils/alert.dart';
+
 class EditScreen extends StatefulWidget {
   const EditScreen({Key? key, required this.img}) : super(key: key);
   final Widget img;
@@ -202,6 +204,17 @@ class _EditScreenState extends EditImageVM {
                                 color: color),
                           ),
                         )))),
+            IconButton(
+              icon: const Icon(
+                Icons.question_mark_rounded,
+                color: Colors.black,
+              ),
+              onPressed: () => showTutorSnack(context),
+              tooltip: 'Help',
+            ),
+            const SizedBox(
+              width: 30,
+            ),
           ],
         ),
       ));
