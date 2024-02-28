@@ -25,11 +25,16 @@ class MenuScreen extends StatelessWidget {
           ),
         ),
         actions: <Widget>[
-          ElevatedButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Cancel'),
-          ),
-          ElevatedButton(
+          Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+            ElevatedButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('Cancel'),
+            ),
+            IconButton(
+              icon: Icon(
+                Icons.paste_rounded,
+                color: Theme.of(context).primaryColor,
+              ),
               onPressed: () async {
                 Clipboard.getData(Clipboard.kTextPlain).then((value) {
                   if (value == null) {
@@ -39,54 +44,56 @@ class MenuScreen extends StatelessWidget {
                   }
                 });
               },
-              child: const Text("Paste from Clipboard")),
-          ElevatedButton(
-            onPressed: () {
-              // validate URL
-              if (txtController.text.isEmpty) {
-                showSnack(context, 'Invalid URL', bgColor: Colors.red);
-                return;
-              }
-              final Uri? link = Uri.tryParse(txtController.text);
-              if (!link!.hasAbsolutePath) {
-                showSnack(context, 'Invalid URL', bgColor: Colors.red);
-                return;
-              }
-              // download image from Internet
-              // push it to EditScreen with Image.network
-              showSnack(
-                  context, 'Downloading image from ${txtController.text}');
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => EditScreen(
-                    img: Image.network(
-                      link.toString(),
-                      frameBuilder: (BuildContext context, Widget child,
-                          int? frame, bool wasSynchronouslyLoaded) {
-                        if (wasSynchronouslyLoaded) {
-                          return child;
-                        }
-                        return AnimatedOpacity(
-                          opacity: frame == null ? 0 : 1,
-                          duration: const Duration(seconds: 1),
-                          curve: Curves.easeOut,
-                          child: child,
-                        );
-                      },
-                      fit: BoxFit.cover,
-                      errorBuilder: (BuildContext context, Object exception,
-                          StackTrace? stackTrace) {
-                        return Text(
-                          "Error downloading image ${txtController.text}",
-                        );
-                      },
+              tooltip: 'Paste from Clipboard',
+            ),
+            ElevatedButton(
+              onPressed: () {
+                // validate URL
+                if (txtController.text.isEmpty) {
+                  showSnack(context, 'Invalid URL', bgColor: Colors.red);
+                  return;
+                }
+                final Uri? link = Uri.tryParse(txtController.text);
+                if (!link!.hasAbsolutePath) {
+                  showSnack(context, 'Invalid URL', bgColor: Colors.red);
+                  return;
+                }
+                // download image from Internet
+                // push it to EditScreen with Image.network
+                showSnack(
+                    context, 'Downloading image from ${txtController.text}');
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => EditScreen(
+                      img: Image.network(
+                        link.toString(),
+                        frameBuilder: (BuildContext context, Widget child,
+                            int? frame, bool wasSynchronouslyLoaded) {
+                          if (wasSynchronouslyLoaded) {
+                            return child;
+                          }
+                          return AnimatedOpacity(
+                            opacity: frame == null ? 0 : 1,
+                            duration: const Duration(seconds: 1),
+                            curve: Curves.easeOut,
+                            child: child,
+                          );
+                        },
+                        fit: BoxFit.cover,
+                        errorBuilder: (BuildContext context, Object exception,
+                            StackTrace? stackTrace) {
+                          return Text(
+                            "Error downloading image ${txtController.text}",
+                          );
+                        },
+                      ),
                     ),
                   ),
-                ),
-              );
-            },
-            child: const Text('Upload'),
-          ),
+                );
+              },
+              child: const Text('Upload'),
+            ),
+          ])
         ],
       ),
     );
