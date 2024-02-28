@@ -85,23 +85,18 @@ class MenuScreen extends StatelessWidget {
     return Scaffold(
       body: Center(
           child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          const SizedBox(
-            height: 50,
-          ),
           IconButton(
             tooltip: "Upload from Internet",
-            icon: const Icon(Icons.upload_file, size: 50, color: Colors.blue),
+            icon: const Icon(Icons.public, size: 50, color: Colors.blue),
             onPressed: () async {
               showLinkDialog(context);
             },
           ),
-          const SizedBox(
-            height: 50,
-          ),
           IconButton(
-            tooltip: "Upload from gallery",
-            icon: const Icon(Icons.computer, size: 50, color: Colors.green),
+            tooltip: "Upload from device",
+            icon: const Icon(Icons.devices, size: 50, color: Colors.green),
             onPressed: () async {
               // pick the image
               XFile? file = await ImagePicker().pickImage(
