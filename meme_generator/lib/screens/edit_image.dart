@@ -127,6 +127,22 @@ class _EditScreenState extends EditImageVM {
             ),
             IconButton(
               icon: const Icon(
+                Icons.abc,
+                color: Colors.black,
+              ),
+              onPressed: () => {},
+              tooltip: 'Letter Space',
+            ),
+            IconButton(
+              icon: const Icon(
+                Icons.format_line_spacing_rounded,
+                color: Colors.black,
+              ),
+              onPressed: () => {},
+              tooltip: 'Line Space',
+            ),
+            IconButton(
+              icon: const Icon(
                 Icons.format_align_left,
                 color: Colors.black,
               ),
