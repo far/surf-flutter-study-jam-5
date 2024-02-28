@@ -10,10 +10,7 @@ class TextImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(
-      textData.text,
-      textAlign: textData.textAlign,
-      style: textData.textStyle,
-    );
+    return Text(textData.text,
+        textAlign: textData.textAlign, style: textData.getTextStyle);
   }
 }
