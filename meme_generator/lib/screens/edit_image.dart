@@ -14,6 +14,7 @@ class EditScreen extends StatefulWidget {
 class _EditScreenState extends EditImageVM {
   @override
   Widget build(BuildContext context) {
+    if (color == Colors.transparent) color = Theme.of(context).primaryColor;
     return Scaffold(
       appBar: _getAppBar,
       body: Screenshot(
@@ -180,18 +181,24 @@ class _EditScreenState extends EditImageVM {
                 Icons.format_color_text,
                 color: Colors.black,
               ),
-              onPressed: () => {},
+              onPressed: () async {
+                showColorPicker(context);
+              },
               tooltip: 'Text Color',
             ),
             Padding(
                 padding: const EdgeInsets.all(5),
-                child: SizedBox(
-                  height: 40,
-                  width: 40,
-                  child: DecoratedBox(
-                    decoration: BoxDecoration(color: color),
-                  ),
-                )),
+                child: Tooltip(
+                    message: "Click to color selected text",
+                    child: GestureDetector(
+                        onTap: () => changeTextColor(color),
+                        child: SizedBox(
+                          height: 40,
+                          width: 40,
+                          child: DecoratedBox(
+                            decoration: BoxDecoration(color: color),
+                          ),
+                        )))),
           ],
         ),
       ));

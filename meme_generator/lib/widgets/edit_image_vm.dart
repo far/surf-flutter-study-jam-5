@@ -30,7 +30,7 @@ abstract class EditImageVM extends State<EditScreen> {
   PickerFont font = PickerFont.fromFontSpec(defaultFontSpec);
   // font in Edit dialog
   String dialogFont = defaultFontSpec;
-  Color color = Colors.black;
+  Color color = Colors.transparent;
   // list of Text objects
   List<TextData> txtList = [];
   // current Text index
@@ -42,7 +42,8 @@ abstract class EditImageVM extends State<EditScreen> {
 
   void uglyClickHandler() {
     if (isClicked)
-      _timer = Timer(Duration(microseconds: 300), () => isClicked = false);
+      _timer =
+          Timer(const Duration(microseconds: 300), () => isClicked = false);
   }
 
   // save image (screenshot)
@@ -82,7 +83,10 @@ abstract class EditImageVM extends State<EditScreen> {
 
   void removeText(BuildContext context) {
     setState(() {
-      txtList.removeAt(idx);
+      if (idx > txtList.length)
+        idx = txtList.length - 1;
+      else
+        txtList.removeAt(idx);
     });
     showSnack(context, 'Text Deleted');
   }
@@ -90,6 +94,7 @@ abstract class EditImageVM extends State<EditScreen> {
   void changeTextColor(Color color) {
     setState(() {
       if (txtList.isEmpty) return;
+      if (idx > txtList.length) idx = txtList.length - 1;
       txtList[idx].color = color;
     });
   }
@@ -277,5 +282,25 @@ abstract class EditImageVM extends State<EditScreen> {
         );
       },
     );
+  }
+
+  Future<bool> showColorPicker(BuildContext context) async {
+    return ColorPicker(
+      title: const Text("Color Picker"),
+      heading: const Text("Select Text Color"),
+      pickersEnabled: const <ColorPickerType, bool>{
+        ColorPickerType.both: false,
+        ColorPickerType.primary: true,
+        ColorPickerType.accent: true,
+        ColorPickerType.bw: true,
+        ColorPickerType.custom: false,
+        ColorPickerType.wheel: true,
+      },
+      color: color,
+      onColorChanged: (Color newColor) => setState(() {
+        color = newColor;
+        if (idx < txtList.length) txtList[idx].color = newColor;
+      }),
+    ).showPickerDialog(context);
   }
 }
