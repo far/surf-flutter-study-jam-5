@@ -31,6 +31,13 @@ class _EditScreenState extends EditImageVM {
                     child: GestureDetector(
                       onTap: () => setState(() {
                         idx = i;
+                        // web onDoubleTap not working as double click
+                        if (isClicked) {
+                          showAddDialog(context, txtIdx: i);
+                        } else {
+                          isClicked = true;
+                          uglyClickHandler();
+                        }
                       }),
                       onDoubleTap: () => setState(() {
                         idx = i;
@@ -168,150 +175,23 @@ class _EditScreenState extends EditImageVM {
             const SizedBox(
               width: 10,
             ),
-            Tooltip(
-              message: 'Black Text Color',
-              child: GestureDetector(
-                onTap: () => changeTextColor(Colors.black),
-                child: const SizedBox(
-                  width: 50.0,
-                  height: 50.0,
-                  child: DecoratedBox(
-                    decoration: BoxDecoration(color: Colors.black),
-                  ),
-                ),
+            IconButton(
+              icon: const Icon(
+                Icons.format_color_text,
+                color: Colors.black,
               ),
+              onPressed: () => {},
+              tooltip: 'Text Color',
             ),
-            const SizedBox(
-              width: 3,
-            ),
-            Tooltip(
-              message: 'White Text Color',
-              child: GestureDetector(
-                onTap: () => changeTextColor(Colors.white),
-                child: const SizedBox(
-                  width: 50.0,
-                  height: 50.0,
+            Padding(
+                padding: const EdgeInsets.all(5),
+                child: SizedBox(
+                  height: 40,
+                  width: 40,
                   child: DecoratedBox(
-                    decoration: BoxDecoration(color: Colors.white),
+                    decoration: BoxDecoration(color: color),
                   ),
-                ),
-              ),
-            ),
-            const SizedBox(
-              width: 3,
-            ),
-            Tooltip(
-              message: 'Red Text Color',
-              child: GestureDetector(
-                onTap: () => changeTextColor(Colors.red),
-                child: const SizedBox(
-                  width: 50.0,
-                  height: 50.0,
-                  child: DecoratedBox(
-                    decoration: BoxDecoration(color: Colors.red),
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(
-              width: 3,
-            ),
-            Tooltip(
-              message: 'Green Text Color',
-              child: GestureDetector(
-                onTap: () => changeTextColor(Colors.green),
-                child: const SizedBox(
-                  width: 50.0,
-                  height: 50.0,
-                  child: DecoratedBox(
-                    decoration: BoxDecoration(color: Colors.green),
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(
-              width: 3,
-            ),
-            Tooltip(
-              message: 'Yellow Text Color',
-              child: GestureDetector(
-                onTap: () => changeTextColor(Colors.blue),
-                child: const SizedBox(
-                  width: 50.0,
-                  height: 50.0,
-                  child: DecoratedBox(
-                    decoration: BoxDecoration(color: Colors.blue),
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(
-              width: 3,
-            ),
-            Tooltip(
-              message: 'Yellow Text Color',
-              child: GestureDetector(
-                onTap: () => changeTextColor(Colors.yellow),
-                child: const SizedBox(
-                  width: 50.0,
-                  height: 50.0,
-                  child: DecoratedBox(
-                    decoration: BoxDecoration(color: Colors.yellow),
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(
-              width: 3,
-            ),
-            Tooltip(
-              message: 'Pink Text Color',
-              child: GestureDetector(
-                onTap: () => changeTextColor(Colors.orange),
-                child: const SizedBox(
-                  width: 50.0,
-                  height: 50.0,
-                  child: DecoratedBox(
-                    decoration: BoxDecoration(color: Colors.orange),
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(
-              width: 3,
-            ),
-            Tooltip(
-              message: 'Purple',
-              child: GestureDetector(
-                onTap: () => changeTextColor(Colors.purple),
-                child: const SizedBox(
-                  width: 50.0,
-                  height: 50.0,
-                  child: DecoratedBox(
-                    decoration: BoxDecoration(color: Colors.purple),
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(
-              width: 3,
-            ),
-            Tooltip(
-              message: 'Grey',
-              child: GestureDetector(
-                onTap: () => changeTextColor(Colors.grey),
-                child: const SizedBox(
-                  width: 50.0,
-                  height: 50.0,
-                  child: DecoratedBox(
-                    decoration: BoxDecoration(color: Colors.grey),
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(
-              width: 3,
-            ),
+                )),
           ],
         ),
       ));
