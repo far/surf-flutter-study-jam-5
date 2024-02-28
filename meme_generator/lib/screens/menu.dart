@@ -25,7 +25,7 @@ class MenuScreen extends StatelessWidget {
           ),
         ),
         actions: <Widget>[
-          Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+          Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
             ElevatedButton(
               onPressed: () => Navigator.of(context).pop(),
               child: const Text('Cancel'),
