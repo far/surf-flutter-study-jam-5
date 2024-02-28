@@ -27,7 +27,7 @@ abstract class EditImageVM extends State<EditScreen> {
       ValueNotifier<PickerFont>(PickerFont.fromFontSpec(defaultFontSpec));
   PickerFont font = PickerFont.fromFontSpec(defaultFontSpec);
   // font in Edit dialog
-  PickerFont dialogFont = PickerFont.fromFontSpec(defaultFontSpec);
+  String dialogFont = defaultFontSpec;
   // list of Text objects
   List<TextData> txtList = [];
   // current Text index
@@ -171,9 +171,8 @@ abstract class EditImageVM extends State<EditScreen> {
   void editText(BuildContext context, int txtIdx) {
     setState(() {
       if (txtList.length <= txtIdx) return;
-      if (dialogFont != font) txtList[txtIdx].font = dialogFont;
+      if (dialogFont != font.toFontSpec()) txtList[txtIdx].font = font;
       txtList[txtIdx].text = textInputController.text;
-
       Navigator.of(context).pop();
     });
   }
@@ -183,14 +182,15 @@ abstract class EditImageVM extends State<EditScreen> {
 
   void showAddDialog(BuildContext context, {int txtIdx = -1}) {
     var _btnLabel = "Add";
+    // save current font before showing Add/Edit dialog
+    dialogFont = font.toFontSpec();
     final edit_mode = txtIdx > -1;
     // Add mode
     if (!edit_mode) {
       textInputController.text = '';
-
       // Edit mode
     } else {
-      dialogFont = font;
+      font = txtList[txtIdx].font;
       _btnLabel = "Update";
       // validate textIndex
       if (txtList.length <= txtIdx) return;
@@ -199,8 +199,8 @@ abstract class EditImageVM extends State<EditScreen> {
     showDialog(
       context: context,
       builder: (BuildContext context) => AlertDialog(
-        title: const Text(
-          'Add New Text',
+        title: Text(
+          edit_mode ? 'Edit Text' : 'Add New Text',
         ),
         content: Column(children: [
           TextField(
@@ -245,7 +245,7 @@ abstract class EditImageVM extends State<EditScreen> {
               width: double.maxFinite,
               child: FontPicker(
                 showInDialog: true,
-                initialFontFamily: defaultFontSpec.split(":")[0],
+                //initialFontFamily: defaultFontSpec.split(":")[0],
                 onFontChanged: (f) {
                   setState(() {
                     font = f;
