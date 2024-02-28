@@ -196,7 +196,10 @@ class _EditScreenState extends EditImageVM {
                           height: 40,
                           width: 40,
                           child: DecoratedBox(
-                            decoration: BoxDecoration(color: color),
+                            decoration: BoxDecoration(
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(10)),
+                                color: color),
                           ),
                         )))),
           ],
