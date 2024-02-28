@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 void showSnack(BuildContext context, String msg,
-    {Color bgColor = Colors.transparent}) {
+    {Color bgColor = Colors.transparent, int delaySec = 1}) {
   if (bgColor == Colors.transparent &&
       Theme.of(context).primaryColor != Colors.transparent) {
     bgColor = Theme.of(context).primaryColor;
@@ -9,7 +9,7 @@ void showSnack(BuildContext context, String msg,
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
       backgroundColor: bgColor,
-      duration: const Duration(seconds: 1),
+      duration: Duration(seconds: delaySec),
       showCloseIcon: true,
       content: Text(msg),
     ),

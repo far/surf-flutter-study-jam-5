@@ -28,6 +28,7 @@ abstract class EditImageVM extends State<EditScreen> {
   PickerFont font = PickerFont.fromFontSpec(defaultFontSpec);
   List<TextData> txtList = [];
   int idx = 0;
+  bool tutorialShowed = false;
 
   // save image (screenshot)
   void saveImage(BuildContext context) {
@@ -113,10 +114,13 @@ abstract class EditImageVM extends State<EditScreen> {
   void changeLineSpace() {
     setState(() {
       if (txtList.isEmpty) return;
-      if (!txtList[idx].text.contains("\n"))
+      if (!txtList[idx].text.contains("\n")) {
         showSnack(context, "Text without lines");
-      txtList[idx].height =
-          txtList[idx].height > 3 ? 1.0 : txtList[idx].height += 0.1;
+        return;
+      } else {
+        txtList[idx].height =
+            txtList[idx].height > 3 ? 1.0 : txtList[idx].height += 0.1;
+      }
     });
   }
 
@@ -151,6 +155,10 @@ abstract class EditImageVM extends State<EditScreen> {
             font: font),
       );
       idx = txtList.length - 1;
+      showSnack(context,
+          "HINT\nDouble Tap (click) - Edit text\nLong tap (click) - Delete",
+          bgColor: Colors.lightBlue, delaySec: tutorialShowed ? 2 : 10);
+      tutorialShowed = true;
       Navigator.of(context).pop();
     });
   }
