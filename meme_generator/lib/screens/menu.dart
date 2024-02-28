@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:meme_generator/screens/edit_image.dart';
 import 'package:meme_generator/utils/alert.dart';
@@ -28,6 +29,17 @@ class MenuScreen extends StatelessWidget {
             onPressed: () => Navigator.of(context).pop(),
             child: const Text('Cancel'),
           ),
+          ElevatedButton(
+              onPressed: () async {
+                Clipboard.getData(Clipboard.kTextPlain).then((value) {
+                  if (value == null) {
+                    showSnack(context, "Empty clipboard");
+                  } else {
+                    txtController.text = value.text!;
+                  }
+                });
+              },
+              child: const Text("Paste from Clipboard")),
           ElevatedButton(
             onPressed: () {
               // validate URL
