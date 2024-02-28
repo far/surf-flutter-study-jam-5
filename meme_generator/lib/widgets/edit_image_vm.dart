@@ -26,8 +26,13 @@ abstract class EditImageVM extends State<EditScreen> {
   final ValueNotifier<PickerFont> _fontValue =
       ValueNotifier<PickerFont>(PickerFont.fromFontSpec(defaultFontSpec));
   PickerFont font = PickerFont.fromFontSpec(defaultFontSpec);
+  // font in Edit dialog
+  PickerFont dialogFont = PickerFont.fromFontSpec(defaultFontSpec);
+  // list of Text objects
   List<TextData> txtList = [];
+  // current Text index
   int idx = 0;
+  // Tutorial showed with long delay only first time
   bool tutorialShowed = false;
 
   // save image (screenshot)
@@ -166,7 +171,7 @@ abstract class EditImageVM extends State<EditScreen> {
   void editText(BuildContext context, int txtIdx) {
     setState(() {
       if (txtList.length <= txtIdx) return;
-      txtList[txtIdx].font = font;
+      if (dialogFont != font) txtList[txtIdx].font = dialogFont;
       txtList[txtIdx].text = textInputController.text;
 
       Navigator.of(context).pop();
@@ -185,6 +190,7 @@ abstract class EditImageVM extends State<EditScreen> {
 
       // Edit mode
     } else {
+      dialogFont = font;
       _btnLabel = "Update";
       // validate textIndex
       if (txtList.length <= txtIdx) return;
