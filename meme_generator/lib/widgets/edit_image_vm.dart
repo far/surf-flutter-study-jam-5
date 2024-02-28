@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:typed_data';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
@@ -5,7 +6,8 @@ import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:flutter_font_picker/flutter_font_picker.dart';
-import 'package:share_plus/share_plus.dart';
+import 'package:flex_color_picker/flex_color_picker.dart';
+//import 'package:share_plus/share_plus.dart';
 
 // for 'html' renderer workaround (see saveImage below)
 import 'dart:js' as js;
@@ -28,12 +30,20 @@ abstract class EditImageVM extends State<EditScreen> {
   PickerFont font = PickerFont.fromFontSpec(defaultFontSpec);
   // font in Edit dialog
   String dialogFont = defaultFontSpec;
+  Color color = Colors.black;
   // list of Text objects
   List<TextData> txtList = [];
   // current Text index
   int idx = 0;
   // Tutorial showed with long delay only first time
   bool tutorialShowed = false;
+  bool isClicked = false;
+  late Timer _timer;
+
+  void uglyClickHandler() {
+    if (isClicked)
+      _timer = Timer(Duration(microseconds: 300), () => isClicked = false);
+  }
 
   // save image (screenshot)
   void saveImage(BuildContext context) {
@@ -153,17 +163,21 @@ abstract class EditImageVM extends State<EditScreen> {
       txtList.add(
         TextData(
             text: textInputController.text,
-            color: Colors.black,
+            color: color,
             fontSize: 50,
             height: 1.0,
             letterSpace: 1.0,
             font: font),
       );
       idx = txtList.length - 1;
-      showSnack(context,
-          "HINT\nDouble Tap (click) - Edit text\nLong tap (click) - Delete",
-          bgColor: Colors.lightBlue, delaySec: tutorialShowed ? 2 : 10);
-      tutorialShowed = true;
+      if (tutorialShowed) {
+        showSnack(context, "New text added");
+      } else {
+        showSnack(context,
+            "💡 Use tools at top bar to change selected text parameters\n\nSingle Tap (click) - SELECT text\nDouble Tap (click) - EDIT text\nLong tap (click) - DELETE text",
+            bgColor: Colors.lightBlue, delaySec: 10);
+        tutorialShowed = true;
+      }
       Navigator.of(context).pop();
     });
   }
@@ -215,6 +229,7 @@ abstract class EditImageVM extends State<EditScreen> {
         ]),
         actions: <Widget>[
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               ElevatedButton(
                 onPressed: () => Navigator.of(context).pop(),
