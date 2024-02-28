@@ -1,24 +1,31 @@
 import 'dart:typed_data';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
-import 'package:meme_generator/utils/gfonts.dart';
-import 'package:meme_generator/screens/edit_image.dart';
-import 'package:meme_generator/models/text.dart';
-import 'package:meme_generator/utils/alert.dart';
-import 'package:meme_generator/utils/perm.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:flutter_font_picker/flutter_font_picker.dart';
 import 'package:share_plus/share_plus.dart';
 
+// for 'html' renderer workaround (see saveImage below)
+import 'dart:js' as js;
+import 'dart:html' as html;
+
+import 'package:meme_generator/utils/gfonts.dart';
+import 'package:meme_generator/screens/edit_image.dart';
+import 'package:meme_generator/models/text.dart';
+import 'package:meme_generator/utils/alert.dart';
+import 'package:meme_generator/utils/perm.dart';
+import './font_example.dart';
+
 abstract class EditImageVM extends State<EditScreen> {
   final ScreenshotController screenshotController = ScreenshotController();
   final TextEditingController textInputController = TextEditingController();
   final TextEditingController textCurrent = TextEditingController();
 
-  late String fontFamily;
-  late TextStyle fontStyle;
+  final ValueNotifier<PickerFont> _fontValue =
+      ValueNotifier<PickerFont>(PickerFont.fromFontSpec(defaultFontSpec));
+  PickerFont font = PickerFont.fromFontSpec(defaultFontSpec);
   List<TextData> txtList = [];
   int idx = 0;
 
@@ -28,15 +35,24 @@ abstract class EditImageVM extends State<EditScreen> {
       if (image != null) {
         showSnack(context, 'Saving image..');
         if (kIsWeb) {
-          await XFile.fromData(image,
-                  mimeType: 'image/jpg',
-                  name: 'MEME_${DateTime.now().millisecondsSinceEpoch}.jpg')
-              .saveTo('.');
+          // working ONLY with 'html' renderer
+          js.context.callMethod("saveAs", <Object>[
+            html.Blob(<Object>[image]),
+            'MEME_${DateTime.now().millisecondsSinceEpoch}.jpg'
+          ]);
+
+          // working ONLY with 'canvaskit' renderer
+
+          //await XFile.fromData(image,
+          //        mimeType: 'image/jpg',
+          //        name: 'MEME_${DateTime.now().millisecondsSinceEpoch}.jpg')
+          //    .saveTo('.');
         } else {
           saveLocally(image);
         }
       }
-    }).catchError((_) {
+    }).catchError((err) {
+      debugPrint(err.toString());
       showSnack(context, 'Loading image error', bgColor: Colors.red);
     });
   }
@@ -83,7 +99,7 @@ abstract class EditImageVM extends State<EditScreen> {
     });
   }
 
-  alignCenter() {
+  void alignCenter() {
     setState(() {
       if (txtList.isEmpty) return;
       txtList[idx].textAlign = TextAlign.center;
@@ -102,12 +118,11 @@ abstract class EditImageVM extends State<EditScreen> {
       txtList.add(
         TextData(
             text: textInputController.text,
-            left: MediaQuery.of(context).size.width / 2,
-            top: MediaQuery.of(context).size.height / 2,
-            textAlign: TextAlign.center,
             color: Colors.black,
             fontSize: 50,
-            textStyle: fontStyle),
+            height: 1.0,
+            letterSpace: 1.0,
+            font: font),
       );
       idx = txtList.length - 1;
       Navigator.of(context).pop();
@@ -120,36 +135,35 @@ abstract class EditImageVM extends State<EditScreen> {
       context: context,
       builder: (BuildContext context) => AlertDialog(
         title: const Text(
-          'New Text',
+          'Add New Text',
         ),
-        content: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
+        content: Column(children: [
+          TextField(
+            controller: textInputController,
+            maxLines: 3,
+            decoration: const InputDecoration(
+              filled: true,
+              hintText: 'type your text',
+            ),
+          ),
+          FontExample(fontValue: _fontValue)
+        ]),
+        actions: <Widget>[
+          Row(
             children: [
-              TextField(
-                controller: textInputController,
-                maxLines: 5,
-                decoration: const InputDecoration(
-                  filled: true,
-                  hintText: 'type your text',
-                ),
-              ),
-              SizedBox(
-                height: 10,
+              ElevatedButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: const Text('Cancel'),
               ),
               ElevatedButton(
                   onPressed: () => showFontPicker(context),
-                  child: const Text('Pick a Font')),
-            ]),
-        actions: <Widget>[
-          ElevatedButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Cancel'),
-          ),
-          ElevatedButton(
-            onPressed: () => addNewText(context),
-            child: const Text('Add Text'),
-          ),
+                  child: const Text('Font')),
+              ElevatedButton(
+                onPressed: () => addNewText(context),
+                child: const Text('Add'),
+              ),
+            ],
+          )
         ],
       ),
     );
@@ -165,11 +179,11 @@ abstract class EditImageVM extends State<EditScreen> {
               width: double.maxFinite,
               child: FontPicker(
                 showInDialog: true,
-                initialFontFamily: 'Roboto',
-                onFontChanged: (font) {
+                initialFontFamily: defaultFontSpec.split(":")[0],
+                onFontChanged: (f) {
                   setState(() {
-                    fontFamily = font.fontFamily;
-                    fontStyle = font.toTextStyle();
+                    font = f;
+                    _fontValue.value = f;
                   });
                   debugPrint(
                     "${font.fontFamily} with font weight ${font.fontWeight} and font style ${font.fontStyle}. FontSpec: ${font.toFontSpec()}",
