@@ -29,8 +29,9 @@
     }
 
     .wrapper {
+      color: lightblue;
+      font-size: 32pt;
       font-family: Menlo;
-      font-size: 33pt;
       display: table-cell;
       height: 100%;
       vertical-align: middle;
@@ -60,25 +61,33 @@
   </script>
   <!-- This script adds the flutter initialization JS code -->
   <script src="flutter.js" defer></script>
+
+  <!-- это FileSaver.js который не взлетел в рендере canvaskit :(
+    (как альтернатива image_gallery_saver)
+  -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.0/FileSaver.min.js"
+    integrity="sha512-csNcFYJniKjJxRWRV1R7fvnXrycHP6qDR21mgz1ZP55xY5d+aHLfo9/FcGDQLfn2IfngbAHd8LdfsagcCqgTcQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
 </head>
 
 <body>
   <div class="main">
-    <div class="wrapper" id="loading">Loading .</div>
+    <div class="wrapper" id="loading"><BR><BR>🚀<BR>LOADING.</div>
   </div>
   <script>
     window.addEventListener('load', function (ev) {
       var loading = document.querySelector('#loading');
-      loading.textContent = "Loading ..";
+      loading.innerHTML = "<BR>🚀<BR><BR>LOADING..";
       _flutter.loader.loadEntrypoint({
         serviceWorker: {
           serviceWorkerVersion: serviceWorkerVersion,
         },
         onEntrypointLoaded: async function (engineInitializer) {
-          loading.textContent = "Loading ...";
+          loading.innerHTML = "🚀<BR><BR><BR>LOADING...";
           let appRunner = await engineInitializer.initializeEngine();
 
-          loading.textContent = "🚀";
+          loading.innerHTML = "🚀<BR><BR><BR><BR><BR>";
           await appRunner.runApp();
         }
       });
