@@ -130,7 +130,7 @@ class _EditScreenState extends EditImageVM {
                 Icons.abc,
                 color: Colors.black,
               ),
-              onPressed: () => {},
+              onPressed: changeLetterSpace,
               tooltip: 'Letter Space',
             ),
             IconButton(
@@ -138,7 +138,7 @@ class _EditScreenState extends EditImageVM {
                 Icons.format_line_spacing_rounded,
                 color: Colors.black,
               ),
-              onPressed: () => {},
+              onPressed: changeLineSpace,
               tooltip: 'Line Space',
             ),
             IconButton(

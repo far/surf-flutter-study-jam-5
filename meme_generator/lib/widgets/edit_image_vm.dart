@@ -106,6 +106,32 @@ abstract class EditImageVM extends State<EditScreen> {
     });
   }
 
+  // increase "height" (LineSpace) up to 3.0 by 0.1 (then reset to 1.0)
+  // TODO: add UI slider?
+  // TODO: move to consts or config (step and max)
+
+  void changeLineSpace() {
+    setState(() {
+      if (txtList.isEmpty) return;
+      if (!txtList[idx].text.contains("\n"))
+        showSnack(context, "Text without lines");
+      txtList[idx].height =
+          txtList[idx].height > 3 ? 1.0 : txtList[idx].height += 0.1;
+    });
+  }
+
+  // increase "letterSpace" up to 20 by 1 (then reset to 1.0)
+  // TODO: add UI slider?
+  // TODO: move to consts or config (step and max)
+
+  void changeLetterSpace() {
+    setState(() {
+      if (txtList.isEmpty) return;
+      txtList[idx].letterSpace =
+          txtList[idx].letterSpace > 20 ? 1.0 : txtList[idx].letterSpace += 1;
+    });
+  }
+
   void alignRight() {
     setState(() {
       if (txtList.isEmpty) return;
