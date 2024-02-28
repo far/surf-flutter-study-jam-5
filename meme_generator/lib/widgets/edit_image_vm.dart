@@ -155,8 +155,33 @@ abstract class EditImageVM extends State<EditScreen> {
     });
   }
 
-  void showAddDialog(BuildContext context) {
-    textInputController.text = '';
+  void editText(BuildContext context, int txtIdx) {
+    setState(() {
+      if (txtList.length <= txtIdx) return;
+      txtList[txtIdx].font = font;
+      txtList[txtIdx].text = textInputController.text;
+
+      Navigator.of(context).pop();
+    });
+  }
+
+  // show Add/Edit text dialog
+  // textIndex = -1 (default, Add mode)
+
+  void showAddDialog(BuildContext context, {int txtIdx = -1}) {
+    var _btnLabel = "Add";
+    final edit_mode = txtIdx > -1;
+    // Add mode
+    if (!edit_mode) {
+      textInputController.text = '';
+
+      // Edit mode
+    } else {
+      _btnLabel = "Update";
+      // validate textIndex
+      if (txtList.length <= txtIdx) return;
+      textInputController.text = txtList[txtIdx].text;
+    }
     showDialog(
       context: context,
       builder: (BuildContext context) => AlertDialog(
@@ -185,8 +210,9 @@ abstract class EditImageVM extends State<EditScreen> {
                   onPressed: () => showFontPicker(context),
                   child: const Text('Font')),
               ElevatedButton(
-                onPressed: () => addNewText(context),
-                child: const Text('Add'),
+                onPressed: () =>
+                    edit_mode ? editText(context, txtIdx) : addNewText(context),
+                child: Text(_btnLabel),
               ),
             ],
           )

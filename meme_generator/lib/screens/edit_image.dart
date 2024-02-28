@@ -29,17 +29,17 @@ class _EditScreenState extends EditImageVM {
                     left: txtList[i].left,
                     top: txtList[i].top,
                     child: GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          idx = i;
-                        });
-                      },
-                      onLongPress: () {
-                        setState(() {
-                          idx = i;
-                          removeText(context);
-                        });
-                      },
+                      onTap: () => setState(() {
+                        idx = i;
+                      }),
+                      onDoubleTap: () => setState(() {
+                        idx = i;
+                        showAddDialog(context, txtIdx: i);
+                      }),
+                      onLongPress: () => setState(() {
+                        idx = i;
+                        removeText(context);
+                      }),
                       child: Draggable(
                         feedback: TextImage(textData: txtList[i]),
                         child: TextImage(textData: txtList[i]),
